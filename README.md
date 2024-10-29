@@ -1,1 +1,1 @@
-# 02456-kan-ntk-project
+# KAN NTK Few-Shot Learning
