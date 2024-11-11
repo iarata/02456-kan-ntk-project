@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{ragged2e}
+\usepackage{blindtext}
+\usepackage{subfigure}
+\usepackage{subfig}
+\usepackage{appendix}
+\usepackage{url}
+
+\usepackage{comment}
+
+\newcommand{\GetTitle}{Deep learning project}
+\newcommand{\Authors}{Hugo M. Nielsen (s214734)}
+\newcommand{\AuthorsHeader}{Hugo M. Nielsen (s214734)}
+\setlength{\headheight}{24pt}
+
+\title{\GetTitle}
+\author{\Authors}
+\date{\today}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Deep Learning Project}
+\lhead{\AuthorsHeader}
+\rfoot{\thepage{} of \pageref{LastPage}}
+
+\begin{document}
+
+\maketitle
+
+\section{MLPs and FFNNs}
+The Multi Layer Perceptron (MLP), or the Feed Forward Neural Network (FFNN), is a composite function of the form: 
+\begin{align}
+    \mathbf{F} = \left(\mathbf{F}_{L-1} \circ \mathbf{F}_{L-2} \circ \dots \circ \mathbf{F}_{0}\right)(\mathbf{x}), \label{eq:MLP_def}
+\end{align}
+with each $F_{\ell} : \mathbb{R}^{n_{\ell}} \to \mathbb{R}^{n_{\ell + 1}}$ defined as $\mathbf{F}_{\ell} = \sigma\left( W_{\ell} \mathbf{x} + \mathbf{b}_{\ell} \right)$,
+for learnable weight matrices $W_{\ell} \in \mathbb{R}^{n_{\ell + 1} \times n_{\ell}}$ and learnable biases $\mathbf{b}_{\ell} \in \mathbb{R}^{n_{\ell + 1}}$ and 
+activation function $\sigma$. 
+Each coordinate of the functions $\mathbf{F}_{\ell}$ are refered to as a \emph{perceptron}, and the function 
+$\mathbf{F}_{\ell}$ is then a layer of perceptrons. Accordingly then, the function $\mathbf{F}$ is called a multi layer perceptron.
+
+
+
+\subsection{Universal Approximation}
+???
+
+
+
+\section{KANs}
+In this section, we give an introduction to Kolmogorov Arnold Networks (KANs), how they work, the main ideas and its relation with
+regular MLPs.
+
+\subsection{The KAN}
+The Kolmogorov Arnold Netowrks are a composite function of the form
+\begin{align}
+    \mathbf{\Phi}(\mathbf{x}) = (\mathbf{\Phi}_{L-1} \circ \mathbf{\Phi}_{L-2} \circ \dots \circ \mathbf{\Phi}_{0})(\mathbf{x}), \label{eq:KAN_def}
+\end{align}
+with each $\Phi_{\ell} : \mathbb{R}^{n_{\ell}} \to \mathbb{R}^{n_{\ell + 1}}$ being of the form
+\begin{align}
+    \mathbf{\Phi}_{\ell}(\mathbf{x}) = \begin{bmatrix}
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, 1, i}(x_{i}) \\
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, 2, i}(x_{i}) \\
+        \vdots \\
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, n_{\ell + 1}, i}(x_{i}) 
+    \end{bmatrix} \label{eq:KAN_def_inner}
+\end{align}
+for $\ell \in \lbrace 1, 2, \dots, L-1 \rbrace$, and $\phi_{n_{\ell}, i, j}$ a non-linear activation function. In this setup the value 
+$n_0$ is the input-dimension to our neural network, $n_L$ is the output dimension, and $n_{\ell}$ for $\ell \in \lbrace 1,2, \dots, n_{L-1}$ 
+are the hidden dimensions, also known as the \emph{width} of the network, which are hyperparameters of our neural network.
+
+By comparing (\ref{eq:KAN_def}) and (\ref{eq:KAN_def_inner}) with the corresponding setup for MLPs, 
+we see that KANs essentially are just MLPs with activations on the edges rather than on the nodes.
+
+
+
+\subsection{B-Splines} \label{sec:b_spline}
+???
+
+\subsection{Grid search}
+???
+
+\subsection{KANs are MLPs}
+Consider the building block (\ref{eq:KAN_def_inner}) of the KAN for a layerl $\ell$ for some $\ell \in \lbrace 0,1, \dots, L-1 \rbrace$, 
+with B-spline activation functions as described in \ref{sec:b_spline}. Then, we can consider the maximum degree $\Delta_{\ell}$ of the polynomial activation functions, that is
+\begin{align}
+    \Delta_{\ell} = \max_{\substack{i \in \lbrace 1, \dots, n_{\ell} \rbrace \\ j \in \lbrace 1, \dots, n_{\ell + 1} \rbrace}}\deg(\phi_{\ell, j, i}).
+\end{align}
+Then we can rewrite (\ref{eq:KAN_def_inner}) as follows:
+\begin{align}
+    \mathbf{\Phi}_{\ell}(\mathbf{x}) = \begin{bmatrix}
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, 1, i}(x_{i}) \\
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, 2, i}(x_{i}) \\
+        \vdots \\
+        \sum_{i=1}^{n_{\ell}} \phi_{\ell, n_{\ell + 1}, i}(x_{i}) 
+    \end{bmatrix} = \begin{bmatrix}
+        \sum_{j=0}^{\Delta_{\ell}}\sum_{i=1}^{n_{\ell}} c_{\ell, 1, i}x_{i}^{j} \\
+        \sum_{j=0}^{\Delta_{\ell}}\sum_{i=1}^{n_{\ell}} c_{\ell, 2, i}x_{i}^{j} \\
+        \vdots \\
+        \sum_{j=0}^{\Delta_{\ell}}\sum_{i=1}^{n_{\ell}} c_{\ell, n_{\ell + 1}, i}x_{i}^{j} 
+    \end{bmatrix} = \sum_{j=0}^{\Delta_{\ell}} C_{\ell, j} \sigma_j(\mathbf{x}),
+\end{align}
+where we label raising to the power $x^j$ as activation function $\sigma_j$ and $C_{\ell, j}$ is the matrix
+\begin{align}
+    C_{\ell, j} = \begin{bmatrix}
+        c_{\ell, 1, 1} & c_{\ell, 1, 2} & \dots & c_{\ell, 1, n_{\ell}} \\
+        c_{\ell, 2, 1} & c_{\ell, 2, 2} & \dots & c_{\ell, 2, n_{\ell}} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        c_{\ell, n_{\ell+1}, 1} & c_{\ell, n_{\ell+1}, 2} & \dots & c_{\ell, n_{\ell+1}, n_{\ell}}
+    \end{bmatrix}.
+\end{align}
+But then (\ref{eq:KAN_def}) becomes:
+\begin{align}
+    ???
+\end{align}
+Which is essentially just a standard MLP with additional fixed combination layers (and weird starts and ends). % The learnable linear transform could be extended to include these, so that it becomes an MLP everywhere but at the ends
+
+
+\subsection{Kolmogorov Arnold Representation Theorem}
+???
+
+
+
+\section{NTKs}
+\subsection{The NTK}
+???
+
+\subsection{NTK KANs}
+In this section we show that the NTK framework also applies to Kolmogorov Arnold Networks in the expected sense that an infinitely wide 
+KAN gives rise to function kernel over the KAN.
+
+\subsubsection{NTK on shallow KANs} % Inspired by: https://rbcborealis.com/research-blogs/the-neural-tangent-kernel/
+Before providing the general proof, we first convince ourselves that we expect the KAN to be an approximately linear function when it's wide 
+enough. For that purpose we introduce the simple 1-hidden layer KAN below, with $n_0 = n_2 = 1$ and learnable parameters $\mathbf{\theta}$:
+
+\begin{align}
+    \mathbf{\Phi}(x) = \frac{1}{\sqrt{n_1}}\phi_{2, 1, 1}\left(\sum_{i=1}^{n_1} \phi_{1,i,1}(x)\right)
+\end{align}
+
+Note here the untraditional formulation of setting a $\frac{1}{\sqrt{n_1}}$ in front, but since this factor can be absorbed 
+by the $\phi_{2, 1, 1}$ activation function it is not of any structural significance. Now suppose that all the activation 
+functions $\phi_{i,j,k}$ are $C^{1}$ wrt each of the network learnable parameters, then using MSE loss over a labeled dataset 
+$I = \lbrace (x_1, y_1), \dots, (x_n, y_n)$:
+
+\begin{align}
+    L[\mathbf{\theta}] = \frac{1}{2}\sum_{i=1}^{n}\left(\mathbf{\Phi}[x_i, \mathbf{\theta}] - y_i\right)^{2} = \frac{1}{2}\sum_{i=1}^{n}\left(\frac{1}{\sqrt{n_1}}\phi_{2, 1, 1}\left(\sum_{i=1}^{n_1} \phi_{1,i,1}(x; \mathbf{\theta}); \mathbf{\theta}\right) - y_i\right)^{2}.
+\end{align}
+
+Now, we can deduce that the gradient of the loss with respect to the learnable parameters will be of the following form, given that 
+the learnable parameter is not in the final layer, in which case the same argument with analogous calculations can be made.
+
+\begin{align}
+    \frac{\partial L}{\partial \theta_j} = \frac{1}{\sqrt{n_1}} \sum_{i=1}^{n}\left(\mathbf{\Phi}[x_i, \mathbf{\theta}] - y_i\right) \frac{\partial \phi_{1,i,1}}{\partial \theta_i}(x; \mathbf{\theta}) 
+\end{align}
+
+Which clearly has $||\frac{\partial L}{\partial \theta_j}|| = O(\frac{1}{\sqrt{n_1}})$ if $x$ can only take values on closed and bounded 
+domain given that $\frac{\partial \phi_{1,i,1}}{\partial \theta_i}$ is continous.
+Thus implying that we might be able to approximate $\mathbf{\Phi}$ by a function
+
+\begin{align}
+    \mathbf{\Phi}[\mathbf{x}, \mathbf{\theta}] \approx \mathbf{\Phi}[\mathbf{x}, \mathbf{\theta}_{0}] 
+    + \frac{\partial \mathbf{\Phi}[\mathbf{x}, \mathbf{\theta}_{0}]^{\intercal}}{\partial \mathbf{\theta}}(\mathbf{\theta} - \mathbf{\theta}_0),
+\end{align}
+
+that is linear in the parameters.
+
+\subsubsection{NTK on KANs}
+We can convert between KANs and MLPs using '\url{https://www.reddit.com/r/MachineLearning/comments/1clcu5i/d_kolmogorovarnold_network_is_just_an_mlp/?rdt=62774}',
+as such we can apply the NTK framework freely to the KAN setup, since we can apply it to the equivalent MLP setup.
+
+
+
+
+
+
+
+
+% Uses NTKs on KANs? https://arxiv.org/pdf/2410.08041
+% KAN = MLP: https://www.reddit.com/r/MachineLearning/comments/1clcu5i/d_kolmogorovarnold_network_is_just_an_mlp/?rdt=62774
+
+
+\end{document}
