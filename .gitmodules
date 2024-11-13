@@ -1,0 +1,3 @@
+[submodule "convkans"]
+	path = convkans
+	url = https://github.com/AntonioTepsich/Convolutional-KANs.git
