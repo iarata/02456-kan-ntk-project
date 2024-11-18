@@ -1,3 +1,18 @@
+# NN stuff
+cifar-10-batches-py/
+cifar-10-batches-py/*
+lightning_logs/
+lightning_logs/*
+MNIST/
+MNIST/*
+cifar-10-python.tar.gz
+model/
+model/*
+figures/
+figures/*
+data/
+data/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
