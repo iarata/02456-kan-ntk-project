@@ -1,0 +1,31 @@
+{
+  "os":  "Windows-11-10.0.22631-SP0",
+  "python":  "3.12.5",
+  "startedAt":  "2024-12-07T10:01:34.580242Z",
+  "program":  "c:\\Users\\hugom\\Documents\\DTU\\02456\\project\\02456-kan-ntk-project\\KANNTK_MNIST.ipynb",
+  "git":  {
+    "remote":  "https://github.com/iarata/02456-kan-ntk-project",
+    "commit":  "45240905c2c4f6db55fddd4972e28850fa6cf639"
+  },
+  "email":  "hugomn2002@gmail.com",
+  "root":  "c:\\Users\\hugom\\Documents\\DTU\\02456\\project\\02456-kan-ntk-project",
+  "host":  "humni-comp",
+  "username":  "hugom",
+  "executable":  "c:\\Users\\hugom\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "codePathLocal":  "KANNTK_MNIST.ipynb",
+  "cpu_count":  12,
+  "cpu_count_logical":  14,
+  "disk":  {
+    "/":  {
+      "total":  "1021821579264",
+      "used":  "157673357312"
+    }
+  },
+  "memory":  {
+    "total":  "33832771584"
+  },
+  "cpu":  {
+    "count":  12,
+    "countLogical":  14
+  }
+}

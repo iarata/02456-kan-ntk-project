@@ -1,0 +1,18 @@
+wandb_version: 1
+
+batch_size:
+  value: 64
+epochs:
+  value: 20
+grid_size:
+  value: 4
+hidden_dim:
+  value: 16
+learning_rate:
+  value: 0.01
+limit:
+  value: 1024
+num_hidden:
+  value: 3
+spline_order:
+  value: 3
