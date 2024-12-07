@@ -16,6 +16,8 @@ temp/
 temp/*
 logs/
 logs/*
+wandb/
+wandb/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
