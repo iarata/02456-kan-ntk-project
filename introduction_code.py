@@ -190,12 +190,13 @@ class GaussianFit(torch.nn.Module):
             for x, y in data:
                 xs.append(x)
                 ys.append(y)
-                y_hats.append(self.model(x.to(self.device)))
+                x.to(self.device)
+                y_hats.append(self.model(x))
         xs = torch.cat(xs, 0).to(self.device)
         y = torch.cat(ys, 0).to(self.device)
         y_hat = torch.cat(y_hats, 0).to(self.device)
         self.label_diff = y - y_hat
-        self.grads = get_gradient(self.model, xs, loss_batched, self.optimizer, True, True, y=y)
+        self.grads = get_gradient(self.model, xs, loss_batched, self.optimizer, True, True, y=y).to(self.device) # Added .to(self.device)
         self.update_w()
         
     def update_noise(self, noise_var: float):
